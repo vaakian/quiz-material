@@ -3,15 +3,12 @@
 > the second generation of quiz
 
 ## dependancde
-``node.js
 # vuetify
 npm install vuetify --save
 
 # axios, vue-axios
 npm install --save axios, vue-axios
 
-
-``
 ## Build Setup
 
 ``` bash
