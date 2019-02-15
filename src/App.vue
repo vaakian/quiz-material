@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <!-- <link rel="apple-touch-startup-image" href="./assets/lunch.png" /> -->
     <loading />
     <msg />
     <navigation />
@@ -24,7 +25,6 @@
         <v-btn slot="activator" dark icon>
           <v-icon>more_vert</v-icon>
         </v-btn>
-
         <v-list v-if="$store.state.userData.username || $store.state.userData.token">
           <v-list-tile to="/user/chart">
             <v-list-tile-title>统计图</v-list-tile-title>
@@ -53,8 +53,6 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-
-
     </v-toolbar>
 
     <transition :name="transitionName">
@@ -97,7 +95,9 @@
       var userData = localStorage.getItem('userData') // 从本地查找用户
       if (userData) {
         this.$store.state.userData = JSON.parse(userData)
+        // this.$store.dispatch('usrLogin')
       }
+      
     },
     methods: {
       logout() {
@@ -135,7 +135,7 @@
   caret-color: #666 !important;
 } */
 
-
+  
   .child-view {
     position: absolute;
     width: 100%;
@@ -160,9 +160,18 @@
     height: auto;
     padding-top: 48px;
   }
-
+  #search 
   table tr:nth-child(1) td,
-  table tr:nth-child(2) td {
+  #search
+  table tr:nth-child(2) td,
+  #fav 
+  table tr:nth-child(1) td,
+  #fav
+  table tr:nth-child(2) td,
+  #score 
+  table tr:nth-child(1) td,
+  #score
+  table tr:nth-child(2) td  {
     border: 1px solid rgb(178, 209, 247);
   }
 

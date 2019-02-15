@@ -115,20 +115,29 @@
         sound: true,
         widgets: false,
         items: [
-            '全部随机(default)',
-            '万维随机',
-            '乐学随机',
-            '信息理论',
-            '进制转换',
-            '信息安全',
-            '计算机系统',
-            '计算机硬件',
-            '程序设计',
-            '计算机网络',
-            '多媒体',
-            'AI、IoT、云计算、大数据'
+            // '全部随机(default)',
+            // '万维随机',
+            // '乐学随机',
+            // '信息理论',
+            // '进制转换',
+            // '信息安全',
+            // '计算机系统',
+            // '计算机硬件',
+            // '程序设计',
+            // '计算机网络',
+            // '多媒体',
+            // 'AI、IoT、云计算、大数据'
         ]
       }
+    },
+    created() {
+      setTimeout(() => {
+        let mainUrl = this.$store.state.mainUrl +'getCategories'
+        this.axios.get(mainUrl).then( rsp => {
+          if(rsp.data.length) 
+            this.items = rsp.data
+        })
+      }, 600)
     },
     computed: {
       isLoged() {

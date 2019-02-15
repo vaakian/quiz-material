@@ -2,7 +2,12 @@
   <div class="hello">
 
     <div id="options">
-      <v-progress-linear :color="$store.state.theme.tone" v-model="quizProgress"></v-progress-linear>
+      <v-progress-linear :color="theme.tone" v-model="quizProgress"></v-progress-linear>
+      <div v-if="showAnswerBtn" style="position: absolute; top: 0;left:0; right: 0;text-align:center">
+        <v-chip :color="theme.tone" text-color="white">
+          {{ $store.state.examData.fmtSec }}
+        </v-chip>
+      </div>
       <h4>
         <!-- 题号图标 + 收藏 -->
         <v-tooltip top>
@@ -14,6 +19,7 @@
         <!-- 题号图标 + 收藏 -->
         {{ questions[qIndex].title }}
       </h4>
+      
       <p class="caption mx-5" style="color: #666" v-show="questionOptions.isfav">{{ fmtDate(questions[qIndex].time) }}</p>
       <v-btn depressed block class="opt-btn" :color="optionStyles.A" @click="optJudge('A')">{{ questions[qIndex].A }}</v-btn>
       <v-btn depressed block class="opt-btn" :color="optionStyles.B" @click="optJudge('B')">{{ questions[qIndex].B }}</v-btn>
@@ -24,7 +30,7 @@
           <a style="text-decoration: none;" href="https://jq.qq.com/?_wv=1027&amp;k=5iQT2Hb" target="view_window">点我加入群聊<br>【计算机技能高考】952346968</a>
         </v-btn>
       </v-layout>
-      <div id="option-btns">
+      <div id="option-btns" >
         <!-- 收藏按钮 -->
         <v-layout align-center justify-center>
           <v-tooltip v-show="!questionOptions.isfav" top>
@@ -41,7 +47,13 @@
             </v-btn>
             <span>便签</span>
           </v-tooltip>
-          <!-- 查看笔记按钮 -->
+          <!-- 屏蔽q按钮 -->
+          <v-tooltip top>
+            <v-btn fab small flat slot="activator" @click="$store.dispatch('addblock', questions[qIndex]['ID'])" :color="$store.state.theme.tone">
+              <v-icon>block</v-icon>
+            </v-btn>
+            <span>{{ $store.state.favMsg ? $store.state.favMsg: '屏蔽这题' }}</span>
+          </v-tooltip>
           <!-- <PublicNotes /> -->
 
         </v-layout>
@@ -55,9 +67,11 @@
         <qSetting />
         <score />
 
-        <!-- 组件区域 -->
-        <v-text flat v-show="userData.slogan" class="mx-3 body-2" style="text-align: center" :color="theme.tone">{{
-          userData.slogan }}</v-text>
+        <!-- 口号区域 -->
+        <v-layout justify-center>
+          <span v-show="userData.slogan" class="title font-weight-regular">
+            {{ userData.slogan }}</span>
+        </v-layout>
 
         <!-- 测试结束 -->
         <v-dialog v-model="doneDilog" width="500">
@@ -77,7 +91,7 @@
             <v-divider></v-divider>
 
             <v-card-actions>
-              <v-btn :color="theme.tone" flat @click="$store.state.generateScore = true;$store.state.showScore = !$store.state.showScore;doneDilog = false">
+              <v-btn :color="theme.tone" flat @click="showScore()">
                 查看成绩
               </v-btn>
               <v-spacer></v-spacer>
@@ -108,7 +122,7 @@
   import QSetting from '@/components/tools/qSetting'
   // import PublicNotes from '@/components/tools/publicNotes'
   import {
-    setTimeout
+    setTimeout, setInterval
   } from 'timers';
   export default {
     components: {
@@ -119,12 +133,29 @@
     name: 'index',
     data() {
       return {
-        doneDilog: false
+        doneDilog: false,
       }
     },
     activated() {
-      // console.log('shuati')
       this.$store.state.tbTitle = '应知刷题'
+    },
+    watch: {
+      "$store.state.examData.second": function(to, from) {
+        var secondTime = parseInt(this.$store.state.examData.second);
+          var minuteTime = 0;
+          var hourTime = 0; 
+          if (secondTime > 60) {
+            minuteTime = parseInt(secondTime / 60);
+            secondTime = parseInt(secondTime % 60);
+            if (minuteTime > 60) {
+              hourTime = parseInt(minuteTime / 60);
+              minuteTime = parseInt(minuteTime % 60);
+            }
+          }
+          var result = ""
+            result = parseInt(hourTime) + "小时" + parseInt(minuteTime) + "分" +parseInt(secondTime) + "秒";
+        this.$store.state.examData.fmtSec = result
+      }
     },
     mounted() {
       this.randQuestion()
@@ -138,7 +169,7 @@
         'qIndex',
         'showAnswerBtn',
         'optionStyles',
-        'theme',
+        'theme'
 
       ]),
       quizProgress() {
@@ -152,9 +183,15 @@
         'qIndexDec',
         'showMsg',
         'addFav',
-        'clOption'
+        'clOption',
+        'examData'
       ]),
-
+      showScore() {
+        clearInterval(this.$store.state.examData.timer)
+        this.$store.state.generateScore = true;
+        this.$store.state.showScore = !this.$store.state.showScore
+        this.doneDilog = false
+      },
       qLast() {
         if (this.qIndex <= 0) {
           // 提示到底了
@@ -205,7 +242,6 @@
         else
           this.$store.state.optionStyles[answer] = 'error'
       },
-
       fmtDate(unixtimestamp) {
         var unixtimestamp = new Date(unixtimestamp * 1000);
         var year = 1900 + unixtimestamp.getYear();
@@ -219,7 +255,7 @@
           " " + hour.substring(hour.length - 2, hour.length) + ":" +
           minute.substring(minute.length - 2, minute.length) + ":" +
           second.substring(second.length - 2, second.length);
-      },
+      }
     }
   }
 

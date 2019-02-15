@@ -55,7 +55,7 @@
           <v-list-tile-action>
             <v-icon>search</v-icon>
           </v-list-tile-action>
-          <v-list-tile-title>搜素</v-list-tile-title>
+          <v-list-tile-title>搜索</v-list-tile-title>
         </v-list-tile>
 
         <v-list-tile to="/info">
@@ -65,22 +65,29 @@
           <v-list-tile-title>高考数据</v-list-tile-title>
         </v-list-tile>
 
+        <v-list-tile to="/examDate">
+          <v-list-tile-action>
+            <v-icon>timer</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>高考日历</v-list-tile-title>
+        </v-list-tile>
+<!-- 
         <v-list-tile to="/rank">
           <v-list-tile-action>
             <v-icon>equalizer</v-icon>
           </v-list-tile-action>
           <v-list-tile-title>用户排名</v-list-tile-title>
-        </v-list-tile>
+        </v-list-tile> -->
 
         <v-list-tile to="/theme">
           <v-list-tile-action>
-            <v-icon>wifi</v-icon>
+            <v-icon>color_lens</v-icon>
           </v-list-tile-action>
-          <v-list-tile-title>主题</v-list-tile-title>
+          <v-list-tile-title>设置主题</v-list-tile-title>
         </v-list-tile>
 
         <v-divider></v-divider>
-        <v-list-group prepend-icon="account_circle">
+        <v-list-group prepend-icon="account_circle" :v-show="$store.state.userData.username">
           <v-list-tile slot="activator">
             <v-list-tile-title>我的</v-list-tile-title>
           </v-list-tile>
@@ -125,7 +132,7 @@
           <v-list-tile-action>
             <v-icon>local_florist</v-icon>
           </v-list-tile-action>
-          <v-list-tile-title>捐赠</v-list-tile-title>
+          <v-list-tile-title>打赏</v-list-tile-title>
         </v-list-tile>
         <v-list-tile to="/about">
           <v-list-tile-action>

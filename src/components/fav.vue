@@ -1,5 +1,5 @@
 <template>
-  <div id="fav">
+  <div id="fav" style="padding-bottom: 45px">
     <v-expansion-panel v-if="questions.length">
       <v-expansion-panel-content v-for="(item, i) in questions" :key="i">
         <div slot="header">
@@ -45,7 +45,6 @@
                 </v-btn>
                 <span>取消收藏</span>
               </v-tooltip>
-              <!-- 收藏按钮 -->
               <!-- 便签按钮 -->
               <v-tooltip right>
                 <v-btn flat icon slot="activator" :color="$store.state.theme.tone" @click="$store.dispatch('noteEdit', {id: item.ID, usr: $store.state.userData.username})">
@@ -53,7 +52,14 @@
                 </v-btn>
                 <span>便签</span>
               </v-tooltip>
-              <!-- 便签按钮 -->
+              <!-- 屏蔽按钮 -->
+              <v-tooltip top>
+                <v-btn fab small flat slot="activator" @click="$store.dispatch('addblock', item.ID)"
+                  :color="$store.state.theme.tone">
+                  <v-icon>block</v-icon>
+                </v-btn>
+                <span>{{ $store.state.favMsg ? $store.state.favMsg: '屏蔽这题' }}</span>
+              </v-tooltip>
             </v-layout>
           </v-card-text>
         </v-card>
@@ -65,7 +71,7 @@
     <!-- 分页 -->
     <v-layout justify-center>
       <v-pagination style="position: fixed; bottom: 0; background: white;" :color="$store.state.theme.tone" v-show="length>1"
-        v-model="page" :length="length" :total-visible="7" :refresh="favRf" fixed></v-pagination>
+        v-model="page" :length="length" :total-visible="5" :refresh="favRf" fixed></v-pagination>
     </v-layout>
 
   </div>
@@ -81,7 +87,15 @@
         cg: 0
       }
     },
+    watch: {
+      favWatchVar(v){
+        this.updateQuestion()
+      }
+    },
     computed: {
+      favWatchVar() {
+        return this.$store.state.favWatchVar
+      },
       favRf() {
         var p = this.page
         this.updateQuestion()

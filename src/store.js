@@ -7,8 +7,9 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    // mainUrl: '//pepe.store/admin/api/',
-    mainUrl: '//10.10.10.143/api/',
+    mainUrl: '/api/',
+    // mainUrl: 'https://pepe.store/api/',
+    // mainUrl: '//10.10.10.143/api/',
     questions: [{
       title: 'loading……',
       A: '数据加载中……',
@@ -23,12 +24,13 @@ export const store = new Vuex.Store({
     },
     userData: {
       username: '',
+      pwd: '',
       token: '',
       id: '',
       time: '',
       slogan: '',
       qq: '',
-    //   avatar: `http://q1.qlogo.cn/g?b=qq&nk=${this.qq}&s=640`
+      //   avatar: `http://q1.qlogo.cn/g?b=qq&nk=${this.qq}&s=640`
     },
     optionStyles: {
       A: '',
@@ -36,11 +38,16 @@ export const store = new Vuex.Store({
       C: '',
       D: ''
     },
-    
+    examData: {
+      second: 0,
+      fmtSec: '',
+      timer: 0
+    },
     theme: {
       tone: ''
     },
     favMsg: '',
+    favWatchVar: false, //实在是没办法了
     usrAnswers: [],
     hideGroupLink: false,
     generateScore: false,
@@ -54,7 +61,7 @@ export const store = new Vuex.Store({
     showAnswerBtn: false,
     noteText: '',
     noteID: NaN,
-    allNotes:[],
+    allNotes: [],
     qIndex: 0,
     msg: {
       text: 'undefined!',
@@ -111,17 +118,36 @@ export const store = new Vuex.Store({
         D: ''
       } // 清空按钮样式
       context.state.usrAnswers = [] //清空用户答案
-      let questionOptions = context.state.questionOptions
+      const request_url = context.state.mainUrl + 'randQuestion' 
+      let questionOptions = Object.assign({}, context.state.questionOptions)
+      let isfav = context.state.questionOptions.isfav
+      let usr = context.state.userData.username
+      let token = context.state.userData.token
+      questionOptions['usr'] = usr
+      questionOptions['token'] = token
+      console.log(isfav)
+      if(isfav==0 && usr && token) { // 如果用户登录了，且不是抽收藏模式，那么isfav=2，屏蔽模式
+        questionOptions['isfav'] = '2'
+      }
       context.state.showLoading = true // 显示加载状态
-      const request_url = context.state.mainUrl + 'randQuestion'
-      questionOptions['usr'] = context.state.userData.username
-      questionOptions['token'] = context.state.userData.token
       axios.get(request_url, {
         params: questionOptions
       }).then(function (rsp) {
         if (rsp.data.status = 200) {
-          setTimeout(() => (context.state.showLoading = false), 300)
+          // setTimeout(() => (context.state.showLoading = false), 300)
+          context.state.showLoading = false
           var questions = rsp.data['data']
+
+          clearInterval(context.state.examData.timer) //关闭interval
+          if (context.state.showAnswerBtn) {
+            context.state.examData.second = 0 // 时间置0
+            
+            console.log('考試模式計時開始')
+            context.state.examData.timer = setInterval(() => {
+              ++context.state.examData.second
+              // console.log(context.state.examData.second)
+            }, 1000)
+          }
           if (!questions.length) {
             context.dispatch('showMsg', {
               msg: '一题都没抽到唉，这类题你还没收藏过吧?重新设置一下吧~',
@@ -212,17 +238,39 @@ export const store = new Vuex.Store({
         }
       }).then((rsp) => {
         //   删除成功后提示
-        if (rsp.data.status == 200)
+        if (rsp.data.status == 200) {
           context.dispatch('showMsg', {
             msg: '已删除收藏~',
             timeout: 1000
           })
-        else
+          context.state.favWatchVar = !context.state.favWatchVar
+        } else
           context.dispatch('showMsg', {
             msg: 'server error.',
             timeout: 1000
           })
       }).catch((e) => {
+        context.dispatch('networkErr')
+      })
+    },
+    addblock(context, id) {
+      context.state.favMsg = ''
+      var request_url = context.state.mainUrl + 'user/addblock'
+      axios.get(request_url, {
+        params: {
+          id: id,
+          usr: context.state.userData.username,
+          token: context.state.userData.token
+        }
+      }).then(rsp => {
+        // http 200的时候
+        if (rsp.data.status == 200)
+          context.state.favMsg = '好的我再也不会出现了~'
+        else
+        context.state.favMsg = '不要重复屏蔽哦'
+      }).catch(e => {
+        // 出现错误的时候
+        context.state.favMsg = '网络错误'
         context.dispatch('networkErr')
       })
     },
@@ -233,7 +281,27 @@ export const store = new Vuex.Store({
         }, 1500)
       }
     },
-    getNotes(context, {id, usr}) { // 获取所有notes
+    usrLogin(context) { // 每次登陆刷新一下用户信息
+      var request_url = context.state.mainUrl + 'user/login'
+      var userData = context.state.userData
+      if (!userData.username) return;
+      axios.get(request_url, {
+        params: {
+          usr: userData.username,
+          pwd: userData.password
+        }
+      }).then((rsp) => {
+        if (rsp.data['status'] == 200) {
+          var userData = rsp.data['data']
+          context.state.userData = userData
+          localStorage.setItem('userData', JSON.stringify(userData))
+        }
+      })
+    },
+    getNotes(context, {
+      id,
+      usr
+    }) { // 获取所有notes
       context.state.showLoading = true
       context.state.noteText = 'loading your note...'
       var request_url = context.state.mainUrl + 'getnotes'
@@ -241,40 +309,40 @@ export const store = new Vuex.Store({
       axios.get(request_url, {
         params: {
           id: id,
-          usr: usr        }
+          usr: usr
+        }
       }).then((rsp) => {
         if (rsp.data.status == 200 && rsp.data.data.notes.length) {
           var notes = rsp.data.data.notes
           context.state.allNotes = notes // 所有notes
           context.state.noteText = notes[0].note //第一个是用户note
-        }
-        else {
-            context.state.noteText = ''
+        } else {
+          context.state.noteText = ''
         }
         setTimeout(() => (context.state.showLoading = false), 300)
       }).catch((e) => {
-          console.log(e)
-          context.state.noteText = ''
-          context.dispatch('networkErr')
+        console.log(e)
+        context.state.noteText = ''
+        context.dispatch('networkErr')
       })
     },
-    noteEdit(context, {id, usr}) {
-        if (!context.state.userData.username || !context.state.userData.token) {
-            context.dispatch('showMsg', {msg: '你还没登录呢，请登录或注册后使用“便签”功能~', timeout: 3000})
-            return;
-        }
-        context.state.noteID = id
-        context.dispatch('getNotes', {id, usr})
-        context.state.showNote = true
-    },
-    
-    // updateNote(context, id) {
-    //     context.dispatch('getNotes', {
-    //         id: id, 
-    //         usr: context.state.userData['username']
-    //     })
-    //     context.noteText = notes[0]
-    // }
-    // fun end
+    noteEdit(context, {
+      id,
+      usr
+    }) {
+      if (!context.state.userData.username || !context.state.userData.token) {
+        context.dispatch('showMsg', {
+          msg: '你还没登录呢，请登录或注册后使用“便签”功能~',
+          timeout: 3000
+        })
+        return;
+      }
+      context.state.noteID = id
+      context.dispatch('getNotes', {
+        id,
+        usr
+      })
+      context.state.showNote = true
+    }
   }
 })

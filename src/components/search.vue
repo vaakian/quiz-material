@@ -41,25 +41,34 @@
                 <a :href="'https://cn.bing.com/search?q=' + item.title" target="view_window">Bing</a> |
                 <a :href="'https://www.google.com/search?&q=' + item.title" target="view_window">Google</a>
               </p>
-
+              <!-- 便签 -->
               <v-tooltip right>
                 <v-btn flat icon slot="activator" :color="$store.state.theme.tone" @click="$store.dispatch('addFav', item.ID)">
                   <v-icon>favorite</v-icon>
                 </v-btn>
                 <span>{{ $store.state.favMsg ? $store.state.favMsg: '收藏' }}</span>
               </v-tooltip>
+              <!-- 便签 -->
               <v-tooltip right>
                 <v-btn flat icon slot="activator" :color="$store.state.theme.tone" @click="$store.dispatch('noteEdit', {id: item.ID, usr: $store.state.userData.username})">
                   <v-icon>edit</v-icon>
                 </v-btn>
                 <span>便签</span>
               </v-tooltip>
+              <!-- 屏蔽 -->
+              <v-tooltip top>
+                <v-btn fab small flat slot="activator" @click="$store.dispatch('addblock', item.ID)"
+                  :color="$store.state.theme.tone">
+                  <v-icon>block</v-icon>
+                </v-btn>
+                <span>{{ $store.state.favMsg ? $store.state.favMsg: '屏蔽这题' }}</span>
+              </v-tooltip>
             </v-layout>
           </v-card-text>
         </v-card>
       </v-expansion-panel-content>
     </v-expansion-panel>
-    
+
     <v-alert :color="$store.state.theme.tone" v-else :value="true" type="info" outline style="margin: 20px 5px;">
       还没有搜到任何题目~
     </v-alert>
@@ -116,8 +125,8 @@
             item.D = item.D.replace(this.keyword, `<span style="color: red">${this.keyword}</span>`)
           })
           var msg = `匹配到${data['data']['row_count']}题`
-          if (data['data']['row_count'] > 100)
-            msg = `匹配到${data['data']['row_count']}题, 考虑性能只显示前100条结果, 请更改你的关键词再试试~`
+          if (data['data']['row_count'] > 70)
+            msg = `匹配到${data['data']['row_count']}题, 考虑系统性能只显示前70条结果, 请更改你的关键词再试试~`
           this.$store.dispatch('showMsg', {
             msg: msg,
             timeout: 1700

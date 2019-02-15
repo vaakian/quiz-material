@@ -1,11 +1,7 @@
 <template>
-  <v-layout row justify-center>
+  <v-layout row justify-center align-center>
     <v-dialog style="background: white" v-model="$store.state.showScore" fullscreen hide-overlay transition="dialog-bottom-transition">
-      <!-- <v-btn rised block slot="activator" style="width: 273.4px">
-        <v-icon right dark>whatshot</v-icon>考试结束
-      </v-btn> -->
-      <!-- 内容区 -->
-      <v-card v-if="$store.state.generateScore">
+      <v-card v-if="$store.state.generateScore" id="score">
         <v-tabs v-model="active" :color="$store.state.theme.tone" dark slider-color="white">
           <v-btn icon dark @click="$store.state.generateScore = false;$store.state.showScore = false">
             <v-icon>close</v-icon>
@@ -15,6 +11,10 @@
             <v-alert :value="true" type="success" class="display-1" v-show="score['right_count'] == $store.state.questions.length">
               恭喜你全部答对啦！
             </v-alert>
+            <v-chip v-if="$store.state.showAnswerBtn" class="mx-2" large :color="$store.state.theme.tone" text-color="white">
+              <v-icon left>account_circle</v-icon>
+              {{ $store.state.examData.fmtSec }}
+            </v-chip>
             <v-card class="mx" style="margin: 10px;">
               <v-toolbar card dense>
                 <v-toolbar-title>
@@ -173,12 +173,4 @@
 
     }
   }
-
 </script>
-<style>
-  table tr:nth-child(1) td,
-  table tr:nth-child(2) td {
-    border: 1px solid rgb(178, 209, 247);
-  }
-
-</style>

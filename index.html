@@ -2,16 +2,42 @@
 <html>
 
 <head>
+    
   <meta charset="utf-8">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=device-dpi" />
-  <title>计算机技能高考</title>
-  <!-- <script src="https://unpkg.com/vuex@3.1.0/dist/vuex.js"></script> -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script> -->
-  <!-- <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet"> -->
-  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script> -->
+  <title>计算机技能高考驿站</title>
+  <meta name=description itemprop=description content=湖北技能高考，计算机专业信息聚合站~>
+  <script src="https://cdn.bootcss.com/vue/2.5.22/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/vuetify/1.4.3/vuetify.min.js "></script>
+  <script src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts-en.simple.min.js"></script>
+  <link href="https://cdn.bootcss.com/vuetify/1.4.4/vuetify.min.css" rel="stylesheet">
   <link href='https://fonts.cat.net/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
-
+  <!-- iPhone5启动图 -->
+  
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <!-- 忽略电话号码 -->
+  <meta content="telephone=no" name="format-detection" />
+  <!-- 图表 -->
+  <link rel="apple-touch-icon-precomposed" href="http://q1.qlogo.cn/g?b=qq&nk=861729091&s=640" />
+  <!-- 启动图 -->
+  <!-- <link rel="apple-touch-startup-image" href="images/ios_startup.png">
+  <link rel="apple-touch-startup-image" href="images/ios_startup@2x.png" sizes="640x920">
+  <link rel="apple-touch-startup-image" href="images/ios_startup-large@2x.png" sizes="640x1096">
+  <link rel="apple-touch-startup-image" href="images/ios_startup-6@2x.png" sizes="750x1294"> -->
+  <link rel="apple-touch-startup-image" href="http://ww1.sinaimg.cn/large/7de5ef2ely1fzor4lw4z3j20yi1noe3c.jpg" sizes="1242x2148">
+<!-- 百度统计 -->
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?2267dff4559544a4c2e04a3e7f176a17";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    
 </head>
 
 <body>
@@ -20,6 +46,7 @@
 </body>
 
 </html>
+  
 <style>
   .v-btn__content {
     font-size: 17px;
@@ -40,26 +67,4 @@
   }
 
 </style>
-<script>
-  // Date.prototype.format = function (fmt) {
-  //   var o = {
-  //     "M+": this.getMonth() + 1, //月份 
-  //     "d+": this.getDate(), //日 
-  //     "h+": this.getHours(), //小时 
-  //     "m+": this.getMinutes(), //分 
-  //     "s+": this.getSeconds(), //秒 
-  //     "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
-  //     "S": this.getMilliseconds() //毫秒 
-  //   };
-  //   if (/(y+)/.test(fmt)) {
-  //     fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-  //   }
-  //   for (var k in o) {
-  //     if (new RegExp("(" + k + ")").test(fmt)) {
-  //       fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-  //     }
-  //   }
-  //   return fmt;
-  // }
 
-</script>
