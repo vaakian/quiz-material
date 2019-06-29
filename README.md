@@ -1,13 +1,25 @@
-# quiz2
+# 代码极其臃肿，弃用了弃用了
 
-> the second generation of quiz
+## 接下来需要：
 
-## dependancde
-# vuetify
-npm install vuetify --save
+- 尽量应用设计模式优化性能
 
-# axios, vue-axios
-npm install --save axios, vue-axios
+- 进一步模块化&解耦
+
+- 文件组织、状态管理优化
+
+- 后端接口鉴权、restful Api
+
+- practice makes perfect
+
+
+
+# dependancde
+## vuetify
+`npm install vuetify --save`
+
+## axios, vue-axios
+`npm install --save axios, vue-axios`
 
 ## Build Setup
 
