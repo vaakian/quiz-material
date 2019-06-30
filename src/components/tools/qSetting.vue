@@ -86,7 +86,7 @@
             </v-list-tile-content>
           </v-list-tile>
 
-          <v-list-tile avatar>
+          <!-- <v-list-tile avatar>
             <v-list-tile-action>
               <v-switch :color="$store.state.theme.tone" v-model="$store.state.hideGroupLink" @change="HideGroupLink"></v-switch>
             </v-list-tile-action>
@@ -94,7 +94,7 @@
               <v-list-tile-title>隐藏入群链接</v-list-tile-title>
               <v-list-tile-sub-title>屏蔽首页做题选项下的入群链接~</v-list-tile-sub-title>
             </v-list-tile-content>
-          </v-list-tile>
+          </v-list-tile> -->
         </v-list>
           </v-card>
 

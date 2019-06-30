@@ -1,5 +1,5 @@
 <template>
-  <div id="contribution">
+  <div id="donate">
     <v-layout justify-center>
       <v-flex xs12 sm3>
         <v-container fluid grid-list-md>
@@ -29,19 +29,19 @@
     data: () => ({
       cards: [{
           title: '微信支付',
-          src: 'http://ww1.sinaimg.cn/large/7de5ef2ely1fzov6ih43bj20d00fiq56.jpg',
+          src: 'https://s2.ax1x.com/2019/06/30/Z1PSzD.jpg',
           flex: 12,
           color: 'green',
         },
         {
           title: '支付宝',
-          src: 'http://ww1.sinaimg.cn/large/7de5ef2ely1fzov7tc9e6j20dj0gtwhb.jpg',
+          src: 'https://s2.ax1x.com/2019/06/30/Z1P9Qe.jpg',
           flex: 12,
           color: 'light-blue'
         },
         {
           title: '支付宝搜索红包码<br><span style="color: #e7ee98">612333303</span>',
-          src: 'http://ww1.sinaimg.cn/large/7de5ef2ely1fzozwgv36xj20ff0kg0ua.jpg',
+          src: 'https://s2.ax1x.com/2019/06/30/Z1PCsH.jpg',
           flex: 12,
           color: '#d61528',
           //   height:'265',

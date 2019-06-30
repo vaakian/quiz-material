@@ -7,7 +7,7 @@
     <note />
     <v-toolbar dark :color="$store.state.theme.tone + ' darken-1'" fixed dense>
       <v-toolbar-side-icon @click="$store.commit('turnDrawer', true)"></v-toolbar-side-icon>
-      <v-list-tile class="white--text" to="/">
+      <v-list-tile class="white--text" to="/" v-if="$route.path != '/'">
         <v-icon>home</v-icon>
       </v-list-tile>
 
@@ -15,13 +15,27 @@
       <v-toolbar-title class="white--text">{{ $store.state.tbTitle }}</v-toolbar-title>
       <v-spacer></v-spacer>
 
+      <v-btn icon @click="$store.dispatch('randQuestion')" v-if="$route.path == '/'">
+        <v-icon>cached</v-icon>
+      </v-btn>
+
+
+      <v-menu offset-y left max-width="200" max-height="300">
+        <v-btn slot="activator" dark icon>
+          <v-icon>share</v-icon>
+        </v-btn>
+        <v-card>
+          <v-card-title class="title">
+            微信小程序扫一扫
+          </v-card-title>
+          <img src="https://s2.ax1x.com/2019/04/30/E8Tase.jpg" style="height: 100%; width:100%;"/>
+        </v-card>
+      </v-menu>
       <v-btn icon to="/search">
         <v-icon>search</v-icon>
       </v-btn>
-      <v-btn icon @click="$store.dispatch('randQuestion')">
-        <v-icon>cached</v-icon>
-      </v-btn>
-      <v-menu bottom left>
+      
+      <v-menu offset-y left>
         <v-btn slot="activator" dark icon>
           <v-icon>more_vert</v-icon>
         </v-btn>
@@ -32,12 +46,9 @@
           <v-list-tile to="/user/fav">
             <v-list-tile-title>我的收藏</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile to="/user/profile">
+          <!-- <v-list-tile to="/user/profile">
             <v-list-tile-title>个人资料</v-list-tile-title>
-          </v-list-tile>
-          <v-list-tile to="/user/custom">
-            <v-list-tile-title>上传题目</v-list-tile-title>
-          </v-list-tile>
+          </v-list-tile> -->
           <v-list-tile @click="logout">
             <v-list-tile-title>注销</v-list-tile-title>
           </v-list-tile>
@@ -117,7 +128,7 @@
           '/user/fav',
           '/user/profile',
           '/user/custom',
-          '/contribution',
+          '/donate',
           '/about'
 
         ]

@@ -2,13 +2,15 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import createPersistedState from 'vuex-persistedstate';
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
+  plugins: [createPersistedState()],
   state: {
     mainUrl: '/api/',
-    // mainUrl: 'https://pepe.store/api/',
+    // mainUrl: 'http://z-os.cn/api/',
     // mainUrl: '//10.10.10.143/api/',
     questions: [{
       title: 'loading……',
@@ -67,9 +69,13 @@ export const store = new Vuex.Store({
       text: 'undefined!',
       show: false,
       timeout: 500
-    }
+    },
+    vuexLocal: 0
   },
   mutations: {
+    vuexSave(state) {
+      state.vuexLocal = !state.vuexLocal
+    },
     turnDrawer(state, value) {
       state.drawer = value
     },
@@ -91,6 +97,7 @@ export const store = new Vuex.Store({
       setTimeout(() => (context.state.showLoading = false), 300)
     },
     clOption(context) {
+      context.commit('vuexSave')
       context.state.optionStyles.A = ''
       context.state.optionStyles.B = ''
       context.state.optionStyles.C = ''
@@ -118,7 +125,7 @@ export const store = new Vuex.Store({
         D: ''
       } // 清空按钮样式
       context.state.usrAnswers = [] //清空用户答案
-      const request_url = context.state.mainUrl + 'randQuestion' 
+      const request_url = context.state.mainUrl + 'randQuestion'
       let questionOptions = Object.assign({}, context.state.questionOptions)
       let isfav = context.state.questionOptions.isfav
       let usr = context.state.userData.username
@@ -126,7 +133,7 @@ export const store = new Vuex.Store({
       questionOptions['usr'] = usr
       questionOptions['token'] = token
       console.log(isfav)
-      if(isfav==0 && usr && token) { // 如果用户登录了，且不是抽收藏模式，那么isfav=2，屏蔽模式
+      if (isfav == 0 && usr && token) { // 如果用户登录了，且不是抽收藏模式，那么isfav=2，屏蔽模式
         questionOptions['isfav'] = '2'
       }
       context.state.showLoading = true // 显示加载状态
@@ -141,7 +148,7 @@ export const store = new Vuex.Store({
           clearInterval(context.state.examData.timer) //关闭interval
           if (context.state.showAnswerBtn) {
             context.state.examData.second = 0 // 时间置0
-            
+
             console.log('考試模式計時開始')
             context.state.examData.timer = setInterval(() => {
               ++context.state.examData.second
@@ -166,6 +173,7 @@ export const store = new Vuex.Store({
           context.state.questions = rsp.data['data'] // 获取成功更新questions
           context.state.qIndex = 0 //返回到第一题
           context.state.questionOptions.count = rsp.data['data'].length //可能获取不到那么多题，安全
+          context.commit('vuexSave')
 
         }
         // 关闭加载
@@ -254,6 +262,14 @@ export const store = new Vuex.Store({
       })
     },
     addblock(context, id) {
+      if (!context.state.userData.username) {
+        context.state.favMsg = '未登录'
+        context.dispatch('showMsg', {
+          msg: '未登录，请登录后使用此功能',
+          timeout: 4000
+        })
+        return;
+      }
       context.state.favMsg = ''
       var request_url = context.state.mainUrl + 'user/addblock'
       axios.get(request_url, {
@@ -267,7 +283,7 @@ export const store = new Vuex.Store({
         if (rsp.data.status == 200)
           context.state.favMsg = '好的我再也不会出现了~'
         else
-        context.state.favMsg = '不要重复屏蔽哦'
+          context.state.favMsg = '不要重复屏蔽哦'
       }).catch(e => {
         // 出现错误的时候
         context.state.favMsg = '网络错误'

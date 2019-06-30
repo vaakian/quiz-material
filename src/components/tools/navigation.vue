@@ -58,19 +58,8 @@
           <v-list-tile-title>搜索</v-list-tile-title>
         </v-list-tile>
 
-        <v-list-tile to="/info">
-          <v-list-tile-action>
-            <v-icon>flag</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>高考数据</v-list-tile-title>
-        </v-list-tile>
-
-        <v-list-tile to="/examDate">
-          <v-list-tile-action>
-            <v-icon>timer</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>高考日历</v-list-tile-title>
-        </v-list-tile>
+        
+        
 <!-- 
         <v-list-tile to="/rank">
           <v-list-tile-action>
@@ -87,7 +76,33 @@
         </v-list-tile>
 
         <v-divider></v-divider>
-        <v-list-group prepend-icon="account_circle" :v-show="$store.state.userData.username">
+        <v-list-group prepend-icon="360">
+          <v-list-tile slot="activator">
+            <v-list-tile-title>高考</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile to="/info">
+          <v-list-tile-action>
+            <v-icon>flag</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>高考数据</v-list-tile-title>
+        </v-list-tile>
+        
+        <v-list-tile to="/examDate">
+          <v-list-tile-action>
+            <v-icon>timer</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>高考日历</v-list-tile-title>
+        </v-list-tile>
+
+        <v-list-tile to="/timeLine">
+          <v-list-tile-action>
+            <v-icon>timeline</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>时间线</v-list-tile-title>
+        </v-list-tile>
+
+        </v-list-group>
+        <v-list-group prepend-icon="account_circle" v-if="$store.state.userData.username.length">
           <v-list-tile slot="activator">
             <v-list-tile-title>我的</v-list-tile-title>
           </v-list-tile>
@@ -106,19 +121,19 @@
           </v-list-tile>
 
 
-          <v-list-tile to="/user/profile">
+          <!-- <v-list-tile to="/user/profile">
             <v-list-tile-title>个人资料</v-list-tile-title>
             <v-list-tile-action>
               <v-icon>face</v-icon>
             </v-list-tile-action>
-          </v-list-tile>
-
+          </v-list-tile> -->
+<!-- 
           <v-list-tile to="/user/custom">
             <v-list-tile-title>上传题目</v-list-tile-title>
             <v-list-tile-action>
               <v-icon>cloud_upload</v-icon>
             </v-list-tile-action>
-          </v-list-tile>
+          </v-list-tile> -->
         </v-list-group>
 
         <v-divider></v-divider>
@@ -128,7 +143,7 @@
           <v-list-tile slot="activator">
             <v-list-tile-title>其他</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile to="/contribution">
+          <v-list-tile to="/donate">
           <v-list-tile-action>
             <v-icon>local_florist</v-icon>
           </v-list-tile-action>

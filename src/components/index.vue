@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
 
-    <div id="options">
+    <div id="options" @keyup.left="qLast" @keyup.enter="qNext">
       <v-progress-linear :color="theme.tone" v-model="quizProgress"></v-progress-linear>
       <div v-if="showAnswerBtn" style="position: absolute; top: 0;left:0; right: 0;text-align:center">
         <v-chip :color="theme.tone" text-color="white">
@@ -25,11 +25,11 @@
       <v-btn depressed block class="opt-btn" :color="optionStyles.B" @click="optJudge('B')">{{ questions[qIndex].B }}</v-btn>
       <v-btn depressed block class="opt-btn" :color="optionStyles.C" @click="optJudge('C')">{{ questions[qIndex].C }}</v-btn>
       <v-btn depressed block class="opt-btn" :color="optionStyles.D" @click="optJudge('D')">{{ questions[qIndex].D }}</v-btn>
-      <v-layout align-center justify-center>
+      <!-- <v-layout align-center justify-center>
         <v-btn flat class="opt-btn" v-show="!$store.state.hideGroupLink">
           <a style="text-decoration: none;" href="https://jq.qq.com/?_wv=1027&amp;k=5iQT2Hb" target="view_window">点我加入群聊<br>【计算机技能高考】952346968</a>
         </v-btn>
-      </v-layout>
+      </v-layout> -->
       <div id="option-btns" >
         <!-- 收藏按钮 -->
         <v-layout align-center justify-center>
@@ -59,8 +59,12 @@
         </v-layout>
         <!-- 收藏按钮结束 -->
         <div class="switch-btn">
-          <v-btn rised large dark :color="theme.tone" @click="qLast">LAST</v-btn>
-          <v-btn rised large dark :color="theme.tone" @click="qNext">NEXT</v-btn>
+          <v-btn rised large dark :color="theme.tone" @click="qLast">
+            <v-icon>arrow_back</v-icon>
+          </v-btn>
+          <v-btn rised large dark :color="theme.tone" @click="qNext">
+            <v-icon>arrow_forward</v-icon>
+          </v-btn>
         </div>
         <v-btn rised block dark :color="theme.tone" @click="showAnswer" v-show="!$store.state.showAnswerBtn">显示答案</v-btn>
         <!-- 组件区域 -->
@@ -104,6 +108,31 @@
         </v-dialog>
 
         <!-- 测试结束 -->
+        <!-- 公告 -->
+        
+        <!-- <v-dialog v-model="msg.dilog" width="500" height="600">
+          <v-card>
+        <v-card-title class="headline">新消息</v-card-title>
+
+        <v-card-text>
+          <p v-html="msg.content" v-if="msg.dilog">
+         </p>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            flat="flat"
+            @click="msg.dilog = false"
+          >
+            ignore
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+         
+        </v-dialog> -->
       </div>
 
     </div>
@@ -134,10 +163,14 @@
     data() {
       return {
         doneDilog: false,
+        // msg: {
+        //   dilog: false,
+        //   content: ``
+        // }
       }
     },
     activated() {
-      this.$store.state.tbTitle = '应知刷题'
+      this.$store.state.tbTitle = '考试'
     },
     watch: {
       "$store.state.examData.second": function(to, from) {
@@ -157,8 +190,25 @@
         this.$store.state.examData.fmtSec = result
       }
     },
+
+    created() {
+      let url = this.$store.state.mainUrl
+      this.axios.get(url + 'version', {
+        params: {
+          version: 2.1
+        }
+      }).then(rsp => {
+        let data = rsp.data
+        if(data.status == 301) {
+          this.msg.dilog = true
+          this.msg.content = data.html
+        }
+      })
+    },
     mounted() {
-      this.randQuestion()
+      this.$store.commit('turnDrawer', false)
+      if (this.$store.state.questions.length <= 1)
+        this.randQuestion()
     },
     computed: {
       ...mapState([
@@ -267,15 +317,21 @@
 
   .switch-btn {
     display: inline-block;
-    /* width: 100%; */
+    /* max-width: 120%; */
     margin: 0 auto;
+    white-space:nowrap;
   }
-
+  .switch-btn button {
+    /* display: inline-block;
+    white-space:nowrap */
+  }
   .switch-btn .v-btn {
     width: 135px;
     margin: 0 auto;
   }
-
+  .opt-btn {
+    text-transform: none !important;
+  }
   #option-btns {
     /* margin: 0 auto; */
     width: 275px;
@@ -285,5 +341,4 @@
     margin: 0 auto;
     bottom: 0px;
   }
-
 </style>

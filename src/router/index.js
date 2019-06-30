@@ -9,10 +9,11 @@ import Fav from '@/components/fav'
 import Theme from '@/components/theme'
 import Profile from '@/components/profile'
 import About from '@/components/about'
-import Contribution from '@/components/contribution'
+import Donate from '@/components/donate'
 import Chart from '@/components/chart'
 import Info from '@/components/info'
 import ExamDate from '@/components/examDate'
+import TimeLime from '@/components/timeLine'
 // 按需加载
 // const Search = resolve => require(['@/components/search'], resolve)
 // const Login = resolve => require(['@/components/login'], resolve)
@@ -90,9 +91,9 @@ export default new Router({
       component: building
     },
     {
-      path: '/contribution',
+      path: '/donate',
       name: '捐赠',
-      component: Contribution
+      component: Donate
     },
     {
       path: '/about',
@@ -103,6 +104,11 @@ export default new Router({
       path: '/examDate',
       name: '日历',
       component: ExamDate
+    },
+    {
+      path: '/timeLine',
+      name: '时间线',
+      component: TimeLime
     }
   ]
 })

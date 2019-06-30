@@ -69,10 +69,11 @@
       还没有收藏任何题目呢~
     </v-alert>
     <!-- 分页 -->
-    <v-layout justify-center>
-      <v-pagination style="position: fixed; bottom: 0; background: white;" :color="$store.state.theme.tone" v-show="length>1"
-        v-model="page" :length="length" :total-visible="5" :refresh="favRf" fixed></v-pagination>
-    </v-layout>
+    <div style="background: white; bottom: 0;position: fixed; left:50%; transform: translateX(-50%)">
+      <v-pagination :color="$store.state.theme.tone" v-show="length>1"
+        v-model="page" :length="length" :total-visible="5" :refresh="favRf"></v-pagination>
+    </div>
+    
 
   </div>
 
