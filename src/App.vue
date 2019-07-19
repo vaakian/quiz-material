@@ -28,7 +28,7 @@
           <v-card-title class="title">
             微信小程序扫一扫
           </v-card-title>
-          <img src="https://s2.ax1x.com/2019/04/30/E8Tase.jpg" style="height: 100%; width:100%;"/>
+          <img src="/static/weapp.jpg" style="height: 100%; width:100%;"/>
         </v-card>
       </v-menu>
       <v-btn icon to="/search">

@@ -53,7 +53,7 @@
                     href="http://wpa.qq.com/msgrd?v=3&uin=861729091&menu=yes"
                   >
                     <v-avatar>
-                      <img src="http://q1.qlogo.cn/g?b=qq&nk=861729091&s=640" alt="trevor">
+                      <img src="http://q1.qlogo.cn/g?b=qq&nk=861729091&s=640" alt="trevor" />
                     </v-avatar>861729091
                   </v-btn>
                 </v-card-text>
@@ -95,6 +95,7 @@ export default {
   methods: {
     usrLogin() {
       var request_url = this.$store.state.mainUrl + "user/login";
+      this.$store.state.showLoading = true;
       this.axios
         .get(request_url, {
           params: {
@@ -103,6 +104,7 @@ export default {
           }
         })
         .then(rsp => {
+          this.$store.state.showLoading = false;
           var msg = `欢迎回来，${this.usr}!`;
           if (rsp.data["status"] == 200) {
             var userData = rsp.data["data"];
@@ -110,7 +112,7 @@ export default {
             localStorage.setItem("userData", JSON.stringify(userData));
             setTimeout(() => {
               this.$router.replace("/");
-            }, 1000);
+            },  500);
           } else {
             msg = `登录失败，账号或密码不正确！`;
           }
@@ -118,6 +120,8 @@ export default {
             msg,
             timeout: 1600
           });
+        }).catch(res => {
+          this.$store.state.showLoading = false;
         });
     }
   }

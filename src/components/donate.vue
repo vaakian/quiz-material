@@ -29,19 +29,19 @@
     data: () => ({
       cards: [{
           title: '微信支付',
-          src: 'https://s2.ax1x.com/2019/06/30/Z1PSzD.jpg',
+          src: '/static/qr_wepay.png',
           flex: 12,
           color: 'green',
         },
         {
           title: '支付宝',
-          src: 'https://s2.ax1x.com/2019/06/30/Z1P9Qe.jpg',
+          src: '/static/qr_alipay.png',
           flex: 12,
           color: 'light-blue'
         },
         {
           title: '支付宝搜索红包码<br><span style="color: #e7ee98">612333303</span>',
-          src: 'https://s2.ax1x.com/2019/06/30/Z1PCsH.jpg',
+          src: '/static/redpack.png',
           flex: 12,
           color: '#d61528',
           //   height:'265',
