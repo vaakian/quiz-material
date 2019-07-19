@@ -6,12 +6,19 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
+    // proxy
+    proxyTable: {
+      '/api': {
+        target: 'http://z-os.cn',// 要跨域的域名
+        changeOrigin: true, // 是否开启跨域
+        pathRewrite: {
+          '^/api': '/api' // 在请求的时候 凡是/api开头的地址都可以跨域
+        }
+      }
+    },
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
-
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8181, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
@@ -20,7 +27,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */
@@ -49,7 +56,7 @@ module.exports = {
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

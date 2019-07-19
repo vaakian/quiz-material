@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { store } from './store'
-
+import 'material-icons/iconfont/material-icons.css'
 // @import '~vuetify/src/stylus/main'
 Vue.config.productionTip = false
 
